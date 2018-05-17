@@ -9,8 +9,6 @@ import javax.swing.*;
 
 public class PostThread extends Thread {
     private String title;
-    private Post[] posts;
-    private User[] users;
     private PostInterpreter postInterpreter;
     private UserInterpreter userInterpreter;
     private JTextArea postArea;
@@ -25,28 +23,13 @@ public class PostThread extends Thread {
 
     @Override
     public void run() {
-        posts = postInterpreter.run();
-        users = userInterpreter.run();
+        Post[] posts = postInterpreter.run(title);
+        User[] users = userInterpreter.run(posts[0].getUserId());
 
-        StringBuilder postFinal = new StringBuilder(title);
-        postFinal.append("\n");
+        String postFinal = title + "\n" +
+                "by " + users[0].getName() +
+                "\n" + posts[0].getBody();
 
-        for (Post post : posts) {
-            if (post.getTitle().equals(title)) {
-                String userId = post.getUserId();
-
-                for (User user : users) {
-                    if (user.getId().equals(userId)) {
-                        postFinal.append("by ").append(user.getName());
-                        break;
-                    }
-                }
-
-                postFinal.append("\n").append(post.getBody());
-                break;
-            }
-        }
-
-        postArea.setText(postFinal.toString());
+        postArea.setText(postFinal);
     }
 }

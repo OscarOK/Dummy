@@ -10,12 +10,13 @@ import java.net.URL;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInterpreter {
-    public User[] run() {
+    public User[] run(String userId) {
         ObjectMapper mapper = new ObjectMapper();
         User[] users = null;
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            users = mapper.readValue(new URL("https://jsonplaceholder.typicode.com/users"), User[].class);
+            String url = "https://jsonplaceholder.typicode.com/users?userId=" + userId.replaceAll("\\s", "%20");
+            users = mapper.readValue(new URL(url), User[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }

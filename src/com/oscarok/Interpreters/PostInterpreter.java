@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.net.URL;
 
 public class PostInterpreter {
-    public Post[] run() {
+    public Post[] run(String title) {
         ObjectMapper mapper = new ObjectMapper();
         Post[] posts = null;
 
         try {
-            posts = mapper.readValue(new URL("https://jsonplaceholder.typicode.com/posts"), Post[].class);
+            String url = "https://jsonplaceholder.typicode.com/posts?title=" + title.replaceAll("\\s", "%20");
+            posts = mapper.readValue(new URL(url), Post[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }

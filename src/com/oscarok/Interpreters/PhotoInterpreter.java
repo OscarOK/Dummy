@@ -8,11 +8,12 @@ import java.net.ConnectException;
 import java.net.URL;
 
 public class PhotoInterpreter {
-    public Photo[] run() {
+    public Photo[] run(String title) {
         ObjectMapper mapper = new ObjectMapper();
         Photo[] photos = null;
         try {
-            photos = mapper.readValue(new URL("https://jsonplaceholder.typicode.com/photos"), Photo[].class);
+            String url = "https://jsonplaceholder.typicode.com/photos?title=" + title.replaceAll("\\s", "%20");
+            photos = mapper.readValue(new URL(url), Photo[].class);
         } catch (ConnectException e) {
             System.out.println("Time limit exceeded");
         } catch (IOException e) {

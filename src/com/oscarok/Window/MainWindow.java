@@ -42,7 +42,7 @@ public class MainWindow {
         searchButton.addActionListener(e -> {
             if (!TitleTextField.getText().isEmpty()) {
                 PostThread postThread = new PostThread(TitleTextField.getText(), postArea);
-                postThread.start();
+                postThread.run();
             }
         });
         searchButtonImage.addActionListener(e -> {

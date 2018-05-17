@@ -26,24 +26,20 @@ public class PhotoThread extends Thread {
     @Override
     public void run() {
         ImageLabel.setText("");
-        photos = photoInterpreter.run();
+        photos = photoInterpreter.run(title);
 
-        for (Photo photo : photos) {
-            if (photo.getTitle().equals(title)) {
-                try {
-                    BufferedImage image = ImageIO.read(new URL(photo.getUrl()));
-                    ImageLabel.setIcon(new ImageIcon(image));
-                } catch (ConnectException e) {
-                    System.err.println("Time limit exceeded");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    System.err.println("Something went wrong");
-                }
-                return;
-            }
+        try {
+            BufferedImage image = ImageIO.read(new URL(photos[0].getUrl()));
+            ImageLabel.setIcon(new ImageIcon(image));
+            return;
+        } catch (ConnectException e) {
+            System.err.println("Time limit exceeded");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Something went wrong");
         }
 
         ImageLabel.setText("¯\\_(ツ)_/¯");
